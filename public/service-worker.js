@@ -38,7 +38,7 @@ self.addEventListener("fetch", function(evt) {
   // cache successful requests to the API
   if (evt.request.url.includes("/api/")) {
     evt.respondWith(
-      caches.open(DATA_CACHE_NAME).then(cache => {
+      caches.open(DATA_CACHE).then(cache => {
         return fetch(evt.request)
           .then(response => {
             // If the response was good, clone it and store it in the cache.
@@ -68,6 +68,10 @@ self.addEventListener("fetch", function(evt) {
           // return the cached home page for all requests for html pages
           return caches.match("/");
         }
+      })
+      .catch(err => {
+        
+        return cache.match(evt.request);
       });
     })
   );
